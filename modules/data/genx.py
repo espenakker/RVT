@@ -2,7 +2,12 @@ from functools import partial
 from typing import Any, Dict, Optional, Union
 
 import math
-import pytorch_lightning as pl
+try:
+    import lightning.pytorch as pl
+    from lightning.pytorch.utilities.combined_loader import CombinedLoader
+except ImportError:  # pragma: no cover - fallback for older installs
+    import pytorch_lightning as pl
+    from pytorch_lightning.utilities.combined_loader import CombinedLoader
 from omegaconf import DictConfig
 from torch.utils.data import DataLoader, Dataset
 
@@ -182,8 +187,8 @@ class DataModule(pl.LightningDataModule):
             # Returns a single dataloader.
             return train_loaders
         assert len(train_loaders) == 2
-        # Returns a mapping from dataset sampling modes to dataloader.
-        return train_loaders
+        # Explicitly control the iteration mode for mixed sampling in Lightning 2.x.
+        return CombinedLoader(train_loaders, mode='max_size_cycle')
 
     def val_dataloader(self):
         return DataLoader(**get_dataloader_kwargs(

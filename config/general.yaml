@@ -3,7 +3,7 @@ reproduce:
   deterministic_flag: False # Must be true for fully deterministic behaviour (slows down training)
   benchmark: False # Should be set to false for fully deterministic behaviour. Could potentially speed up training.
 training:
-  precision: 16
+  precision: '16-mixed'
   max_epochs: 10000
   max_steps: 400000
   learning_rate: 0.0002

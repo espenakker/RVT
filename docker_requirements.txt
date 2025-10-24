@@ -1,8 +1,11 @@
-# --- Data Handling & ML ---
+# docker_requirements.txt
+
+# --- Core ML Framework ---
 pytorch-lightning==2.5.5
 torch==2.8.0
-torchdata==0.8.0
 
+# --- Data Handling & ML ---
+torchdata==0.8.0         # Align with torch==2.8.0 CUDA 12.8 wheels
 h5py==3.8.0
 hdf5plugin==4.4.0
 einops==0.6.0

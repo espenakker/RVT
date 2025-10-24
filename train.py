@@ -17,9 +17,14 @@ cudnn.allow_tf32 = True
 
 import hydra
 from omegaconf import DictConfig, OmegaConf
-import pytorch_lightning as pl
-from pytorch_lightning.callbacks import LearningRateMonitor, ModelSummary
-from pytorch_lightning.strategies import DDPStrategy
+try:
+    import lightning.pytorch as pl
+    from lightning.pytorch.callbacks import LearningRateMonitor, ModelSummary
+    from lightning.pytorch.strategies import DDPStrategy
+except ImportError:  # pragma: no cover - fallback for older installs
+    import pytorch_lightning as pl
+    from pytorch_lightning.callbacks import LearningRateMonitor, ModelSummary
+    from pytorch_lightning.strategies import DDPStrategy
 
 from callbacks.custom import get_ckpt_callback, get_viz_callback
 from callbacks.gradflow import GradFlowLogCallback
@@ -85,7 +90,7 @@ def main(config: DictConfig):
     module = fetch_model_module(config=config)
     if ckpt_path is not None and config.wandb.resume_only_weights:
         print('Resuming only the weights instead of the full training state')
-        module = module.load_from_checkpoint(str(ckpt_path), **{'full_config': config})
+        module = type(module).load_from_checkpoint(str(ckpt_path), **{'full_config': config})
         ckpt_path = None
 
     # ---------------------
@@ -131,7 +136,6 @@ def main(config: DictConfig):
         max_steps=config.training.max_steps,
         strategy=strategy,
         sync_batchnorm=False if strategy is None else True,
-        move_metrics_to_cpu=False,
         benchmark=config.reproduce.benchmark,
         deterministic=config.reproduce.deterministic_flag,
     )

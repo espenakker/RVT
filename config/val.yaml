@@ -12,4 +12,4 @@ hardware:
 batch_size:
   eval: 8
 training:
-  precision: 16
+  precision: '16-mixed'

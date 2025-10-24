@@ -24,14 +24,14 @@ conda create -y -n rvt python=3.9 pip
 conda activate rvt
 conda config --set channel_priority flexible
 
-CUDA_VERSION=11.8
+CUDA_VERSION=12.8
 
 conda install -y h5py=3.8.0 blosc-hdf5-plugin=1.0.0 \
-hydra-core=1.3.2 einops=0.6.0 torchdata=0.6.0 tqdm numba \
-pytorch=2.0.0 torchvision=0.15.0 pytorch-cuda=$CUDA_VERSION \
+hydra-core=1.3.2 einops=0.6.0 torchdata=0.8.0 numpy=1.26.4 tqdm numba=0.60.0 \
+pytorch=2.8.0 torchvision=0.23.0 pytorch-cuda=$CUDA_VERSION \
 -c pytorch -c nvidia -c conda-forge
 
-python -m pip install pytorch-lightning==1.8.6 wandb==0.14.0 \
+python -m pip install pytorch-lightning==2.5.5 wandb==0.14.0 \
 pandas==1.5.3 plotly==5.13.1 opencv-python==4.6.0.66 tabulate==0.9.0 \
 pycocotools==2.0.6 bbox-visualizer==0.1.0 StrEnum==0.4.10
 python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
@@ -43,7 +43,7 @@ Alternative to the conda installation.
 ```Bash
 python -m venv rvt
 source rvt/bin/activate
-python -m pip install -r torch-req.txt --index-url https://download.pytorch.org/whl/cu118
+python -m pip install -r torch-req.txt --index-url https://download.pytorch.org/whl/cu128
 python -m pip install -r requirements.txt
 ```
 Optionally, install Detectron2 within the *activated* venv

@@ -1,0 +1,9 @@
+
+docker run --gpus all -it --rm -v E:\event_camera_python/:/workspace/ -w /workspace/ clean_rvt:latest bash
+
+docker run --shm-size=12G --gpus all -it --rm -v E:\event_camera_python/:/workspace/ -w /workspace/ rvt:ee bash
+
+
+python RVT/validation.py dataset=gen4 dataset.path=RVT_Resources/data/gen4 checkpoint=RVT_Resources/checkpoints/rvt-t.ckpt use_test_set=0 hardware.gpus=0 +experiment/gen4="tiny.yaml" batch_size.eval=1 model.postprocess.confidence_threshold=0.001
+
+

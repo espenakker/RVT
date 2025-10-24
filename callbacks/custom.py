@@ -1,6 +1,8 @@
 from omegaconf import DictConfig
-from pytorch_lightning.callbacks import Callback
-from pytorch_lightning.callbacks import ModelCheckpoint
+try:
+    from lightning.pytorch.callbacks import Callback, ModelCheckpoint
+except ImportError:  # pragma: no cover - fallback for older installs
+    from pytorch_lightning.callbacks import Callback, ModelCheckpoint
 
 from callbacks.detection import DetectionVizCallback
 
@@ -27,7 +29,8 @@ def get_ckpt_callback(config: DictConfig) -> ModelCheckpoint:
         every_n_epochs=config.logging.ckpt_every_n_epochs,
         save_last=True,
         verbose=True)
-    cktp_callback.CHECKPOINT_NAME_LAST = 'last_epoch={epoch:03d}-step={step}'
+    if hasattr(cktp_callback, 'CHECKPOINT_NAME_LAST'):
+        cktp_callback.CHECKPOINT_NAME_LAST = 'last_epoch={epoch:03d}-step={step}'
     return cktp_callback
 
 
