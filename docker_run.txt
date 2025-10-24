@@ -1,9 +1,17 @@
 
-docker run --gpus all -it --rm -v E:\event_camera_python/:/workspace/ -w /workspace/ clean_rvt:latest bash
-
-docker run --shm-size=12G --gpus all -it --rm -v E:\event_camera_python/:/workspace/ -w /workspace/ rvt:ee bash
-
+docker run   --env DISPLAY=:0 --env WAYLAND_DISPLAY=wayland-0 --env XDG_RUNTIME_DIR=/run/user/1000/ --env QT_QPA_PLATFORM=xcb --volume \\wsl.localhost\Ubuntu-24.04\mnt\wslg/.X11-unix:/tmp/.X11-unix --volume \\wsl.localhost\Ubuntu-24.04\mnt\wslg:/mnt/wslg --shm-size=12G --gpus all -it --rm -v E:\event_camera_python/:/workspace/ -w /workspace/ rvt:ee bash
 
 python RVT/validation.py dataset=gen4 dataset.path=RVT_Resources/data/gen4 checkpoint=RVT_Resources/checkpoints/rvt-t.ckpt use_test_set=0 hardware.gpus=0 +experiment/gen4="tiny.yaml" batch_size.eval=1 model.postprocess.confidence_threshold=0.001
 
+
+python scripts/demo_live_visual.py \
+    dataset=gen4 \
+    dataset.path=../RVT_Resources/data/gen4 \
+    checkpoint=../RVT_Resources/checkpoints/rvt-b.ckpt \
+    hardware.gpus=0 \
+    +experiment/gen4=base.yaml \
+    batch_size.eval=1 \
+    model.postprocess.confidence_threshold=0.001 \
+    +demo.max_batches=200 \
+    +demo.output_path=./demo.mp4
 

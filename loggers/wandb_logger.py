@@ -14,7 +14,7 @@ try:
     from lightning.pytorch.callbacks.model_checkpoint import ModelCheckpoint
     from lightning.pytorch.loggers.logger import Logger, rank_zero_experiment
     from lightning.pytorch.utilities.rank_zero import rank_zero_only, rank_zero_warn
-    from lightning.pytorch.utilities.logger import (
+    from lightning.fabric.utilities.logger import (
         _add_prefix,
         _convert_params,
         _flatten_dict,
@@ -25,7 +25,7 @@ except ImportError:  # pragma: no cover - fallback for older installs
     from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
     from pytorch_lightning.loggers.logger import Logger, rank_zero_experiment
     from pytorch_lightning.utilities.rank_zero import rank_zero_only, rank_zero_warn
-    from pytorch_lightning.utilities.logger import (
+    from lightning_fabric.utilities.logger import (
         _add_prefix,
         _convert_params,
         _flatten_dict,
